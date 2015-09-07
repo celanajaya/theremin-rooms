@@ -20,6 +20,7 @@
     border: 2px solid black;
     text-align: center;
     padding-top: 5%;
+    cursor: pointer;
 }
 
 #control-panel > button {

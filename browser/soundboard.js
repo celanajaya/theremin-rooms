@@ -11,16 +11,6 @@ window.soundboard = new window.EventEmitter();
     var gainNode;
     var oscillator;
 
-    // The color selection elements on the DOM.
-    var instrumentElements = [].slice.call(document.querySelectorAll('.marker'));
-
-    instrumentElements.forEach(function (el) {
-        el.addEventListener('click', function () {
-            instrument = this.id;
-            document.querySelector('.selected').classList.remove('selected');
-            this.classList.add('selected');
-        });
-    });
 
     var canvas = document.querySelector('#sound');
     var board = document.querySelector('#board');
@@ -46,6 +36,21 @@ window.soundboard = new window.EventEmitter();
     };
 
     var playing = false;
+
+    var instrumentElements = [].slice.call(document.querySelectorAll('.marker'));
+
+    instrumentElements.forEach(function (el) {
+        el.addEventListener('click', function () {
+            if (this.id !== "clear") {
+                instrument = this.id;
+                document.querySelector('.selected').classList.remove('selected');
+                this.classList.add('selected');
+            }
+            else {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+        });
+    });
 
     canvas.addEventListener('mousedown', function (e) {
         playing = true;
@@ -109,14 +114,6 @@ window.soundboard = new window.EventEmitter();
             ctx.closePath();
         }
 
-        // ctx.beginPath();
-        // ctx.moveTo(start.x, start.y);
-        // ctx.lineTo(end.x, end.y);
-        // ctx.closePath();
-        // ctx.stroke();
-
-        // If shouldBroadcast is truthy, we will emit a draw event to listeners
-        // with the start, end and color data.
         if (shouldBroadcast) {
             soundboard.emit('play', start, end, inst);
         }
